@@ -12,3 +12,11 @@ class User(Base):
     email = Column(String(100), unique=True, nullable=False)
     loans = relationship("Loan", back_populates="user")
 
+class Books(Base):
+    __tablename__ = 'books'
+    
+    id = Column(Integer, primary_key=True)
+    title = Column(String(100), nullable=False)
+    author = Column(String(100), nullable=False)
+    checked_out = Column(Boolean, default=False)
+    loans = relationship("Loan", back_populates="book")
