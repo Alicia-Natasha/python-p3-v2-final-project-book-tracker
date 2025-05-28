@@ -20,3 +20,15 @@ class Books(Base):
     author = Column(String(100), nullable=False)
     checked_out = Column(Boolean, default=False)
     loans = relationship("Loan", back_populates="book")
+
+class Loan(Base):
+    __tablename__ = 'loans'
+    
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('users.id'))
+    book_id = Column(Integer, ForeignKey('books.id'))
+    loan_date = Column(DateTime, default=datetime.datetime.today)
+    return_date = Column(DateTime, nullable=True)
+    
+    user = relationship("User", back_populates="loans")
+    book = relationship("Books", back_populates="loans")
