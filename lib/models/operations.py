@@ -14,4 +14,13 @@ class Operations:
             session.add(new_user)
             session.commit()
             print(f"User {name} added with ID {new_user.id}")
-            
+
+    def add_book(title, author):
+        with Session(engine) as session:
+            """Add a new book to the database."""
+            new_book = Books(title=title, author=author)
+            session.add(new_book)
+            session.commit()
+            print(f"Book '{title}' by {author} added with ID {new_book.id}")
+
+    
