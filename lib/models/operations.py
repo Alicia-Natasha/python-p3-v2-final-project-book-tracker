@@ -66,3 +66,15 @@ class Operations:
             for book in books:
                 status = "Available" if not book.checked_out else "Checked Out"
                 print(f"Found Book: {book.title} by {book.author} (ID: {book.id})")
+
+    def search_books_by_author(author):
+        """Search for books by author."""
+        with Session(engine) as session:
+            books = session.query(Books).filter(Books.author.ilike(f"%{author}%")).all()
+            if not books:
+                print(f"No books found by author '{author}'.")
+                return
+            
+            for book in books:
+                status = "Available" if not book.checked_out else "Checked Out"
+                print(f"Found Book: {book.title} by {book.author} (ID: {book.id})")
