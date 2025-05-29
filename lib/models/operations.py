@@ -90,3 +90,14 @@ class Operations:
             for book in books:
                 status = "Available" if not book.checked_out else "Checked Out"
                 print(f"Book: {book.title} by {book.author} (ID: {book.id}) - {status}")
+
+    def list_all_users():
+        """List all users in the library."""
+        with Session(engine) as session:
+            users = session.query(User).all()
+            if not users:
+                print("No users found in the library.")
+                return
+            
+            for user in users:
+                print(f"User ID: {user.id}, Name: {user.name}")
