@@ -42,4 +42,15 @@ class Operations:
             session.commit()
             print(f"Book '{book.title}' checked out to User ID {user.id}.")
 
-    
+    def return_book(user_id, book_title):
+        """Return a book for a user."""
+        with Session(engine) as session:
+            book = session.query(Books).filter_by(title=book_title, is_checked_out=True).first()
+            if not book:
+                print(f"No active loan found for User ID {user_id} and Book '{book_title}'.")
+                return
+            
+            book.checked_out = False
+            book.return_date = datetime.datetime.now()
+            session.commit()
+            print(f"Book '{book.title}' returned by User ID {user_id}.")    
