@@ -78,3 +78,15 @@ class Operations:
             for book in books:
                 status = "Available" if not book.checked_out else "Checked Out"
                 print(f"Found Book: {book.title} by {book.author} (ID: {book.id})")
+
+    def list_all_books():
+        """List all books in the library."""
+        with Session(engine) as session:
+            books = session.query(Books).all()
+            if not books:
+                print("No books found in the library.")
+                return
+            
+            for book in books:
+                status = "Available" if not book.checked_out else "Checked Out"
+                print(f"Book: {book.title} by {book.author} (ID: {book.id}) - {status}")
