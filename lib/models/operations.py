@@ -54,3 +54,15 @@ class Operations:
             book.return_date = datetime.datetime.now()
             session.commit()
             print(f"Book '{book.title}' returned by User ID {user_id}.")    
+
+    def search_books_by_title(title):
+        """Search for books by title."""
+        with Session(engine) as session:
+            books = session.query(Books).filter(Books.title.ilike(f"%{title}%")).all()
+            if not books:
+                print(f"No books found with title containing '{title}'.")
+                return
+            
+            for book in books:
+                status = "Available" if not book.checked_out else "Checked Out"
+                print(f"Found Book: {book.title} by {book.author} (ID: {book.id})")
