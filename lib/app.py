@@ -37,3 +37,28 @@ list_users_parser = subparsers.add_parser("list_users", help="List all users in 
 list_loans_parser = subparsers.add_parser("list_loans", help="List all loans in the library")
 
 args = parser.parse_args()
+
+if args.command == "add_user":
+    Operations.add_user(args.name)
+elif args.command == "add_book":
+    Operations.add_book(args.title, args.author)
+elif args.command == "check_out_book":
+    Operations.check_out_book(args.user_id, args.book_title)
+elif args.command == "return_book":
+    Operations.return_book(args.user_id, args.book_title)
+elif args.command == "search_books_by_title":
+    Operations.search_books_by_title(args.title)
+elif args.command == "list_books":
+    Operations.list_books()
+elif args.command == "list_users":
+    Operations.list_users()
+elif args.command == "list_loans":
+    Operations.list_loans()
+else:
+    parser.print_help()
+    exit(1)
+
+# If no command is provided, print the help message
+if not args.command:
+    parser.print_help()
+    exit(1)
