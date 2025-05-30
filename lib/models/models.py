@@ -1,6 +1,8 @@
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 import datetime
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Boolean
 
 Base = declarative_base()
 
@@ -12,7 +14,7 @@ class User(Base):
     email = Column(String(100), unique=True, nullable=False)
     loans = relationship("Loan", back_populates="user")
 
-class Books(Base):
+class Book(Base):
     __tablename__ = 'books'
     
     id = Column(Integer, primary_key=True)
@@ -27,8 +29,8 @@ class Loan(Base):
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey('users.id'))
     book_id = Column(Integer, ForeignKey('books.id'))
-    loan_date = Column(DateTime, default=datetime.datetime.today)
+    loan_date = Column(DateTime, default=datetime.datetime.utcnow)
     return_date = Column(DateTime, nullable=True)
     
     user = relationship("User", back_populates="loans")
-    book = relationship("Books", back_populates="loans")
+    book = relationship("Book", back_populates="loans")

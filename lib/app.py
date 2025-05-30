@@ -6,7 +6,7 @@ subparsers = parser.add_subparsers(dest="command")
 
 # Add user command
 user_parser = subparsers.add_parser("add_user", help="Add a new user")
-user_parser.add_argument("--name", type=str, require=True, help="Name of the user")
+user_parser.add_argument("--name", type=str, required=True, help="Name of the user")
 
 # Add book command
 book_parser = subparsers.add_parser("add_book", help="Add a new book")
@@ -38,6 +38,11 @@ list_loans_parser = subparsers.add_parser("list_loans", help="List all loans in 
 
 args = parser.parse_args()
 
+# If no command is provided, print the help message
+if not args.command:
+    parser.print_help()
+    exit(1)
+
 if args.command == "add_user":
     Operations.add_user(args.name)
 elif args.command == "add_book":
@@ -54,11 +59,6 @@ elif args.command == "list_users":
     Operations.list_users()
 elif args.command == "list_loans":
     Operations.list_loans()
-else:
-    parser.print_help()
-    exit(1)
 
-# If no command is provided, print the help message
-if not args.command:
-    parser.print_help()
-    exit(1)
+
+
