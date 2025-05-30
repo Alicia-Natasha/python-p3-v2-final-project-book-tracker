@@ -1,6 +1,6 @@
 from models import User, Loan, Book
 from sqlalchemy.orm import Session
-from db import engine
+from lib.db import engine
 import datetime
 
 class Operations:
