@@ -3,6 +3,7 @@ from sqlalchemy.orm import relationship
 import datetime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Boolean
+from db import Base
 
 Base = declarative_base()
 
@@ -14,6 +15,9 @@ class User(Base):
     email = Column(String(100), unique=True, nullable=False)
     loans = relationship("Loan", back_populates="user")
 
+    def __repr__(self):
+        return f"<User(id={self.id}, name={self.name}, email={self.email})>"
+
 class Book(Base):
     __tablename__ = 'books'
     
@@ -22,6 +26,9 @@ class Book(Base):
     author = Column(String(100), nullable=False)
     checked_out = Column(Boolean, default=False)
     loans = relationship("Loan", back_populates="book")
+
+    def __repr__(self):
+        return f"<Book(id={self.id}, title={self.title}, author={self.author}, checked_out={self.checked_out})>"
 
 class Loan(Base):
     __tablename__ = 'loans'
@@ -34,3 +41,6 @@ class Loan(Base):
     
     user = relationship("User", back_populates="loans")
     book = relationship("Book", back_populates="loans")
+
+    def __repr__(self):
+        return f"<Loan(id={self.id}, user_id={self.user_id}, book_id={self.book_id}, loan_date={self.loan_date}, return_date={self.return_date})>"

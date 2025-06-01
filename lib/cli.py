@@ -1,6 +1,7 @@
-from models.models import User, Books, Loan
+from models.models import User, Book, Loan
 from sqlalchemy.orm import Session
-from db import engine
+from lib.db import engine, Base
+import datetime
 
 class CLI:
     def __init__(self):
@@ -84,13 +85,13 @@ class CLI:
             if choice == "1":
                 title = input("Enter book title: ")
                 author = input("Enter book author: ")
-                book = Books(title=title, author=author)
+                book = Book(title=title, author=author)
                 self.session.add(book)
                 self.session.commit()
                 print(f"Book added with ID: {book.id}")
             elif choice == "2":
                 id = input("Enter book ID to delete: ")
-                book = self.session.query(Books).get(id)
+                book = self.session.query(Book).get(id)
                 if book:
                     self.session.delete(book)
                     self.session.commit()
@@ -98,13 +99,13 @@ class CLI:
                 else:
                     print("Book not found.")
             elif choice == "3":
-                books = self.session.query(Books).all()
+                books = self.session.query(Book).all()
                 for b in books:
                     status = "Checked Out" if b.checked_out else "Available"
                     print(f"ID: {b.id}, Title: {b.title}, Author: {b.author}, Status: {status}")
             elif choice == "4":
                 id = input("Enter book ID: ")
-                book = self.session.query(Books).get(id)
+                book = self.session.query(Book).get(id)
                 if book:
                     print(f"ID: {book.id}, Title: {book.title}, Author: {book.author}, Status: {'Checked Out' if book.checked_out else 'Available'}")
                     for loan in book.loans:
@@ -129,7 +130,7 @@ class CLI:
                 user_id = input("Enter user ID: ")
                 book_id = input("Enter book ID: ")
                 user = self.session.query(User).get(user_id)
-                book = self.session.query(Books).get(book_id)
+                book = self.session.query(Book).get(book_id)
                 if user and book and not book.checked_out:
                     loan = Loan(user_id=user.id, book_id=book.id)
                     book.checked_out = True
@@ -141,7 +142,7 @@ class CLI:
             elif choice == "2":
                 book_id = input("Enter book ID to return: ")
                 loan = self.session.query(Loan).filter_by(book_id=book_id, return_date=None).first()
-                book = self.session.query(Books).get(book_id)
+                book = self.session.query(Book).get(book_id)
                 if loan and book:
                     loan.return_date = datetime.datetime.now()
                     book.checked_out = False
@@ -159,4 +160,5 @@ class CLI:
                 print("Invalid choice. Please try again.")
 
 if __name__ == "__main__":
+    Base.metadata.create_all(engine)  # Create tables if they don't exist
     CLI().run()
