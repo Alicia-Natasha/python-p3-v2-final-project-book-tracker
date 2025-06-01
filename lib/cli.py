@@ -4,14 +4,25 @@ from database import Session
 def list_books():
     session = Session()
     books = session.query(Book).all()
-    for book in books:
-        print(book)
+    
+    if not books:
+        print("No books available.")
+    else:
+        print("Available books:")
+        for book in books:
+            print(book)
     session.close()
 
 def add_book():
+    print("Add a new book:")
+    print("Please enter the book details.")
     title = input("Title: ")
     author = input("Author: ")
     genre = input("Genre: ")
+
+    if not title or not author or not genre:
+            print("All fields are required.")
+            return
 
     session = Session()
     new_book = Book(title=title, author=author, genre=genre)

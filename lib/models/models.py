@@ -3,7 +3,7 @@ from sqlalchemy.orm import relationship
 import datetime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Boolean
-from db import Base
+from lib.database import Base
 
 Base = declarative_base()
 
